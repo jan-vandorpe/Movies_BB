@@ -1,0 +1,74 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Ladies at the Movies, Men in control</title>
+<style>
+.film{
+	width: 30em;clear:both;
+	padding:1em 0;
+	border-bottom:2px solid silver;
+	}
+.film img {float:left; margin-right:2em;}
+.film .kol {margin-left:12em;}
+.film h2 {margin-top:0;}
+.film dl{overflow:auto;width: 100%; list-style:none}
+.film dt{display:inline; width: 30%; clear:left; float:left; font-weight:bold}
+.film dd{display:inline; width: 65%; clear:right; float:right; margin:0}
+
+
+</style>
+</head>
+
+<body>
+<h1>Ladies at the Movies, Men in control</h1>
+<!-- film container -->
+<div id="films">
+<header>
+    <div id="filter"><label>Show me:</label></div>
+</header>
+<script id="filmTemplate" type="text/template">
+
+    <h1>Film overzicht</h1>
+	<img src="../images/<%= foto %>" alt="<%= titel %>" />
+	<div class="kol">
+		<h2><%= titel %><span><%= genre %></span></h2>
+		<p><%= beschrijving %></p>
+		<dl>
+			<dt>regisseur:</dt>
+			<dd><%= regisseur %></dd>
+			<dt>genre:</dt>
+			<dd><%= genre %></dd>
+			<dt>duurtijd:</dt>
+			<dd><%= duur %></dd>
+			<dt>release:</dt>
+			<dd><%= release %></dd>
+		<dl>
+	</div>
+	
+</script>
+
+</div>
+
+
+
+
+<script src="../frameworks/jquery/jquery-1.10.2.min.js"></script>
+<script src="../frameworks/underscore-min.js"></script>
+<script src="../frameworks/backbone-min.js"></script>
+<script src="latmic.js"></script>
+<script>
+var myFilmApp  = new FilmApp();
+myFilmApp.start();
+
+//$.getJSON( "http://localhost/Javascript_nieuw/projecten_advanced/json_films.php", 
+//			function( data ) {	
+//				var myApp = new FilmApp(data);
+//				myApp.start();
+//				
+//			});
+//
+</script>
+
+</body>
+</html>
