@@ -1,7 +1,7 @@
 /* 
- hèt eigenlijke programma: movies.js
+Movies module: movies.js
  */
-// movies.js
+
 
 define([
     'jquery',
@@ -14,7 +14,7 @@ define([
 //Model: Film
     var Film = Backbone.Model.extend({
         defaults: {
-            filmId: 0,
+            filmNr: 0,
             titel: "",
             beschrijving: "",
             genre: "",
@@ -22,9 +22,17 @@ define([
             regisseur: "",
             release: "",
             foto: "noimage.jpg"
-        }
+        },
+        //parse toevogen om _id van Mongo om te zetten in id van BB
+//        parse: function(response){
+//            response.id = response._id;
+//            return response;
+//        }
+
+        //beter is de _id gebruiken van Mongo
+        idAttribute: "_id"
     })
-//Collection: filmcollection
+//Collection: FilmCollectie
     var FilmCollectie = Backbone.Collection.extend({
         model: Film,
         url: "/api/films" // connect via de api
@@ -125,7 +133,10 @@ define([
             e.preventDefault();
             var formData = {};
             $velden = $('#frmFilm').find('input, textarea'); //gebruik find want children enkel één niveau
-            // console.log("aantal: " + $velden.length)
+//            met jquery?
+//            jqFormData = $('#frmFilm').serializeArray(); //gaat niet: array van objecten, we moeten één object krijgen
+//            console.log(jqFormData)
+           // console.log("aantal: " + $velden.length)
             $velden.each(function(i, el) {
                 if ($(el).val() != '') {
                     formData[el.name] = $(el).val();
@@ -135,14 +146,22 @@ define([
             fullPath = formData.foto;
             //console.log(fullPath)
             formData.foto = /([^\\]+)$/.exec(fullPath)[1];
-
-            this.collection.add(new Film(formData));
+            //formData.release =  new Date(formData.release).getTime(); //niet nodi in Chrome dankzij kalenderwidget
+            // split veld Cast in acteurs op basis van komma
+            arrTemp = []
+           _.each( formData.cast.split( ',' ), function( acteur ) {
+                    arrTemp.push({ 'acteur': acteur });
+                });
+            formData.cast = arrTemp; 
+            //console.log(formData)
+            //this.collection.add(new Film(formData));  //eerste versie zonder API
+            this.collection.create(formData);           //tweede versie met API
+            //de method add triggert een add event
             console.log(formData)
         }
 
     });
-
-
+    
     return {
         start: function() {
             // you can use $, _ or Backbone here
