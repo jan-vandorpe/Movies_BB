@@ -27,15 +27,16 @@ app.listen(port, function() {
     console.log('Express server luistert op poort %d in %s mode', port, app.settings.env);
 })
 
-//connect to mongoosdb
-mongoose.connect('mongodb://localhost/filmotheek'); // MongoDB MOET opgestart zijn anders crashed de Node server
+//connect to mongodb
+mongoose.connect('mongodb://localhost/filmotheek'); // MongoDB MOET opgestart zijn anders crashed de Node serverscript
 //MongoDb Schemas
 //Cast Schema
 var Cast = new mongoose.Schema({
     acteur: String
 })
+//Film Schema
 var Film = new mongoose.Schema({
-    filmId: Number,
+    filmNr: Number,
     titel: String,
     beschrijving: String,
     genre: String,
@@ -46,7 +47,7 @@ var Film = new mongoose.Schema({
     cast:[Cast]
 })
 
-//MongoDB Model
+//Mongoose Model
 var FilmModel = mongoose.model('Film', Film);
 //
 //
@@ -73,7 +74,7 @@ app.get('/api/films', function(request, response) {
 
 //POST /api/films :    film toevoegen
 app.post('/api/films', function(request, response) {
-
+    //document uit Model
     var film = new FilmModel({
         filmId: request.body.filmId,
         titel: request.body.titel,
@@ -116,7 +117,7 @@ app.put('/api/films/:id', function(request, response) {
 
     console.log('updating film' + request.body.titel);
     return FilmModel.findById(request.params.id, function(err, film) {
-                film.filmId         = request.body.filmId,
+                film.filmNr         = request.body.filmNr,
                 film.titel          = request.body.titel,
                 film.beschrijving   = request.body.beschrijving,
                 film.genre          = request.body.genre,

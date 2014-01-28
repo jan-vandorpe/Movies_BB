@@ -70,6 +70,8 @@ define([
             //this.render(); //mag weg met de 2d eventListener?
             this.listenTo(this.collection, 'add', this.renderFilm); //event listener voor add event Collection
             this.listenTo(this.collection, 'reset', this.render);
+            //select toevoegen
+            this.$el.find("#filter").append(this.createSelect());
         },
         render: function() {
             console.log("FilmoverzichtView.render")
@@ -89,11 +91,12 @@ define([
             });
         },
         createSelect: function() {
-            var filter = this.$el.find("#filter"),
-                    select = $("<select/>", {
-                html: "<option value='all'>All</option>"
-            });
-
+//            var filter = this.$el.find("#filter"),
+//                    select = $("<select/>", {
+//                html: "<option value='all'>All</option>"
+//            });
+            var select = $("<select><option value='all'>All</option></select>");
+            console.log(this.getGenres())
             _.each(this.getGenres(), function(item) {
                 var option = $("<option/>", {
                     value: item.toLowerCase(),
